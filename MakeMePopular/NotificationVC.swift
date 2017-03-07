@@ -12,11 +12,7 @@ import ObjectMapper
 
 class NotificationVC: UIViewController {
     
-    @IBOutlet weak var accept: UIButton!
-    
     @IBOutlet weak var mainview: UIView!
-    
-    
     @IBOutlet weak var map: UIButton!
     @IBOutlet weak var reject: UIButton!
     @IBOutlet weak var notificationTitle: UILabel!
@@ -53,8 +49,7 @@ class NotificationVC: UIViewController {
         notifid = pref.string(forKey: "NotifId")!
         
         if(type == "Emergency"){
-            
-            self.accept.setTitle("Acknowledge", for: .normal)
+           
             self.reject.setTitle("Ignore", for: .normal)
         }
         
@@ -64,12 +59,6 @@ class NotificationVC: UIViewController {
     
     func setUPView(){
         let utils = Utils()
-        
-        accept.layer.cornerRadius = 7
-        accept.layer.shadowOpacity = 0.5
-        accept.layer.shadowOffset = CGSize(width: 3.0, height: 2.0)
-        accept.layer.shadowRadius = 5.0
-        accept.layer.shadowColor = UIColor.black.cgColor
         
         reject.layer.cornerRadius = 7
         reject.layer.shadowOpacity = 0.5
@@ -128,24 +117,7 @@ class NotificationVC: UIViewController {
 
     }
     
-    @IBAction func acceptClick(_ sender: Any) {
-        
-             
-        if(Reachability.isConnectedToNetwork()){
-            acceptrejectEmergencyRequest(completed: {}, isreach: true,isShowMap: false)
-        }
-        else {
-            
-            let credentialerror = UIAlertController(title: "No Internet Connection", message: "Make sure your device is connected to the internet.", preferredStyle: .alert)
-            
-            let cancelAction = UIAlertAction(title: "Ok", style: .cancel, handler:nil)
-            
-            credentialerror.addAction(cancelAction)
-            self.present(credentialerror, animated: true, completion: {  })
-            
-        }
-        
-    }
+    
    
     @IBAction func rejectClick(_ sender: Any) {
         

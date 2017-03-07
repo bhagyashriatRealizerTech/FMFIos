@@ -31,6 +31,7 @@
 		03C84AB91E28D1C200497B5B /* EmergencyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C84AB81E28D1C200497B5B /* EmergencyCell.swift */; };
 		03C84ABB1E290EC900497B5B /* AddFriendVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C84ABA1E290EC900497B5B /* AddFriendVC.swift */; };
 		03C84ABD1E290FF200497B5B /* AddFriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C84ABC1E290FF200497B5B /* AddFriendCell.swift */; };
+		0412DB071E5EF38F0027BAD5 /* SendMessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0412DB061E5EF38F0027BAD5 /* SendMessageModel.swift */; };
 		041ED3B41E2E29C100DE97EF /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041ED3B31E2E29C100DE97EF /* Extensions.swift */; };
 		041ED3B61E2E29FC00DE97EF /* CollapsibleTableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041ED3B51E2E29FC00DE97EF /* CollapsibleTableViewHeader.swift */; };
 		041ED3B81E2E2B6400DE97EF /* CollapsibleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041ED3B71E2E2B6400DE97EF /* CollapsibleTableViewController.swift */; };
@@ -39,7 +40,6 @@
 		041ED3BE1E2E4C8200DE97EF /* FriendlistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041ED3BD1E2E4C8200DE97EF /* FriendlistCell.swift */; };
 		041ED3C01E2E4DCF00DE97EF /* FriendListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041ED3BF1E2E4DCF00DE97EF /* FriendListModel.swift */; };
 		045F65B91E3779BF0031E631 /* NotificationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045F65B81E3779BF0031E631 /* NotificationVC.swift */; };
-		04653D601E55E769004113C6 /* MakeMePopular.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 04653D5E1E55E769004113C6 /* MakeMePopular.xcdatamodeld */; };
 		04788D601E4081CD003A0FC9 /* ImageToText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04788D5F1E4081CD003A0FC9 /* ImageToText.swift */; };
 		04788D621E408232003A0FC9 /* PhotosDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04788D611E408232003A0FC9 /* PhotosDataManager.swift */; };
 		04788D641E4082D7003A0FC9 /* DownloadImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04788D631E4082D7003A0FC9 /* DownloadImage.swift */; };
@@ -78,6 +78,7 @@
 		04D316FA1E4B374E006417C0 /* CustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D316F91E4B374E006417C0 /* CustomSlider.swift */; };
 		04DB85471E35C0E700D1B0DF /* NearByFriendResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DB85461E35C0E700D1B0DF /* NearByFriendResponseModel.swift */; };
 		04DB85491E35C85000D1B0DF /* TrackFriendModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DB85481E35C85000D1B0DF /* TrackFriendModel.swift */; };
+		04DE9F931E60396C006FD235 /* MakeMePopular.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 04DE9F911E60396C006FD235 /* MakeMePopular.xcdatamodeld */; };
 		F611F8741097258EC603ACBD /* Pods_MakeMePopular.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EFE3F955E9262F4DA21512C /* Pods_MakeMePopular.framework */; };
 /* End PBXBuildFile section */
 
@@ -109,6 +110,7 @@
 		03C84AB81E28D1C200497B5B /* EmergencyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmergencyCell.swift; sourceTree = "<group>"; };
 		03C84ABA1E290EC900497B5B /* AddFriendVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddFriendVC.swift; sourceTree = "<group>"; };
 		03C84ABC1E290FF200497B5B /* AddFriendCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddFriendCell.swift; sourceTree = "<group>"; };
+		0412DB061E5EF38F0027BAD5 /* SendMessageModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendMessageModel.swift; sourceTree = "<group>"; };
 		041ED3B31E2E29C100DE97EF /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		041ED3B51E2E29FC00DE97EF /* CollapsibleTableViewHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollapsibleTableViewHeader.swift; sourceTree = "<group>"; };
 		041ED3B71E2E2B6400DE97EF /* CollapsibleTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollapsibleTableViewController.swift; sourceTree = "<group>"; };
@@ -117,10 +119,10 @@
 		041ED3BD1E2E4C8200DE97EF /* FriendlistCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendlistCell.swift; sourceTree = "<group>"; };
 		041ED3BF1E2E4DCF00DE97EF /* FriendListModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendListModel.swift; sourceTree = "<group>"; };
 		045F65B81E3779BF0031E631 /* NotificationVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationVC.swift; sourceTree = "<group>"; };
-		04653D5F1E55E769004113C6 /* MakeMePopular.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MakeMePopular.xcdatamodel; sourceTree = "<group>"; };
 		04788D5F1E4081CD003A0FC9 /* ImageToText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageToText.swift; sourceTree = "<group>"; };
 		04788D611E408232003A0FC9 /* PhotosDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosDataManager.swift; sourceTree = "<group>"; };
 		04788D631E4082D7003A0FC9 /* DownloadImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadImage.swift; sourceTree = "<group>"; };
+		047AD9DD1E6E8F1E00DA7C84 /* MakeMePopular-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MakeMePopular-Bridging-Header.h"; sourceTree = "<group>"; };
 		048A13CB1E5329E800D011A3 /* ThreadListVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadListVC.swift; sourceTree = "<group>"; };
 		048A13CD1E532BD300D011A3 /* DateUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateUtil.swift; sourceTree = "<group>"; };
 		048A13CF1E532FB300D011A3 /* LastMessageTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastMessageTableCell.swift; sourceTree = "<group>"; };
@@ -153,10 +155,10 @@
 		04D02D931E38C9F900CB19A0 /* FreindRequestNotificationVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FreindRequestNotificationVC.swift; sourceTree = "<group>"; };
 		04D06C871E309A1500CAB7E2 /* InterestListModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterestListModel.swift; sourceTree = "<group>"; };
 		04D263FE1E2DEA7C00FE99F4 /* SearchFriendModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchFriendModel.swift; sourceTree = "<group>"; };
-		04D316F81E4B01EE006417C0 /* MakeMePopular-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MakeMePopular-Bridging-Header.h"; sourceTree = "<group>"; };
 		04D316F91E4B374E006417C0 /* CustomSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSlider.swift; sourceTree = "<group>"; };
 		04DB85461E35C0E700D1B0DF /* NearByFriendResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NearByFriendResponseModel.swift; sourceTree = "<group>"; };
 		04DB85481E35C85000D1B0DF /* TrackFriendModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackFriendModel.swift; sourceTree = "<group>"; };
+		04DE9F921E60396C006FD235 /* MakeMePopular.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MakeMePopular.xcdatamodel; sourceTree = "<group>"; };
 		1EFE3F955E9262F4DA21512C /* Pods_MakeMePopular.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MakeMePopular.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DEA765F66C440B786A62426 /* Pods-MakeMePopular.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MakeMePopular.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MakeMePopular/Pods-MakeMePopular.debug.xcconfig"; sourceTree = "<group>"; };
 		9DFAA53BD439800AD8D7D713 /* Pods-MakeMePopular.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MakeMePopular.release.xcconfig"; path = "Pods/Target Support Files/Pods-MakeMePopular/Pods-MakeMePopular.release.xcconfig"; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 				048A13DC1E53339800D011A3 /* MessageModel.swift */,
 				04C7505D1E559BE0001663A5 /* ContactList.swift */,
 				04C5D3FD1E5AEAC700AF9494 /* NearByFriendMainResModel.swift */,
+				0412DB061E5EF38F0027BAD5 /* SendMessageModel.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -275,9 +278,9 @@
 		0372D7121E24D15400B165B4 /* MakeMePopular */ = {
 			isa = PBXGroup;
 			children = (
+				04DE9F911E60396C006FD235 /* MakeMePopular.xcdatamodeld */,
 				03C1E3181E2754450071A174 /* GoogleService-Info.plist */,
 				03C1E3171E27473A0071A174 /* MakeMePopular.entitlements */,
-				04653D5E1E55E769004113C6 /* MakeMePopular.xcdatamodeld */,
 				03C1E31A1E2765FA0071A174 /* Map */,
 				037156DD1E266C1300472E80 /* API */,
 				037156D81E26626F00472E80 /* Controller */,
@@ -293,12 +296,12 @@
 				04D02D911E388F2900CB19A0 /* Reachability.swift */,
 				04788D611E408232003A0FC9 /* PhotosDataManager.swift */,
 				04788D631E4082D7003A0FC9 /* DownloadImage.swift */,
+				047AD9DD1E6E8F1E00DA7C84 /* MakeMePopular-Bridging-Header.h */,
 				048A13CD1E532BD300D011A3 /* DateUtil.swift */,
 				0372D7171E24D15400B165B4 /* Main.storyboard */,
 				0372D71D1E24D15400B165B4 /* Assets.xcassets */,
 				0372D71F1E24D15400B165B4 /* LaunchScreen.storyboard */,
 				0372D7221E24D15400B165B4 /* Info.plist */,
-				04D316F81E4B01EE006417C0 /* MakeMePopular-Bridging-Header.h */,
 			);
 			path = MakeMePopular;
 			sourceTree = "<group>";
@@ -374,7 +377,7 @@
 					0372D70F1E24D15400B165B4 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = B3V896CVNT;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -491,9 +494,9 @@
 				037156DF1E266C2700472E80 /* SetLocationAPI.swift in Sources */,
 				04CEE0BB1E419904005B64BC /* ProfileInfo.swift in Sources */,
 				03C84ABB1E290EC900497B5B /* AddFriendVC.swift in Sources */,
+				0412DB071E5EF38F0027BAD5 /* SendMessageModel.swift in Sources */,
 				037156DA1E2663A800472E80 /* UserDetail.swift in Sources */,
 				048A13D01E532FB300D011A3 /* LastMessageTableCell.swift in Sources */,
-				04653D601E55E769004113C6 /* MakeMePopular.xcdatamodeld in Sources */,
 				041ED3B61E2E29FC00DE97EF /* CollapsibleTableViewHeader.swift in Sources */,
 				04D02D921E388F2900CB19A0 /* Reachability.swift in Sources */,
 				04C873D01E31E01400B667A9 /* NearMeFriendVC.swift in Sources */,
@@ -530,6 +533,7 @@
 				037156DC1E2666F800472E80 /* FriendsDetail.swift in Sources */,
 				041ED3C01E2E4DCF00DE97EF /* FriendListModel.swift in Sources */,
 				04A4666E1E44542600D693B3 /* NotificationModel.swift in Sources */,
+				04DE9F931E60396C006FD235 /* MakeMePopular.xcdatamodeld in Sources */,
 				04CEE0C11E421781005B64BC /* NearByPlacesModel.swift in Sources */,
 				04C7505C1E559AF7001663A5 /* FriendListDetail.swift in Sources */,
 				048A13D91E53332400D011A3 /* SelectMessageCenterListVC.swift in Sources */,
@@ -603,7 +607,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -647,7 +651,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -662,15 +666,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = MakeMePopular/MakeMePopular.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				DEVELOPMENT_TEAM = B3V896CVNT;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = MakeMePopular/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = www.realizertech.com.MakeMePopular;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "778143c9-6628-459a-a098-f8cb3b76c9cd";
-				PROVISIONING_PROFILE_SPECIFIER = "Find Me Friend Distribution Provisioning";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "MakeMePopular/MakeMePopular-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -683,15 +687,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = MakeMePopular/MakeMePopular.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				DEVELOPMENT_TEAM = B3V896CVNT;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = MakeMePopular/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = www.realizertech.com.MakeMePopular;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "778143c9-6628-459a-a098-f8cb3b76c9cd";
-				PROVISIONING_PROFILE_SPECIFIER = "Find Me Friend Distribution Provisioning";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "MakeMePopular/MakeMePopular-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -722,15 +726,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		04653D5E1E55E769004113C6 /* MakeMePopular.xcdatamodeld */ = {
+		04DE9F911E60396C006FD235 /* MakeMePopular.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				04653D5F1E55E769004113C6 /* MakeMePopular.xcdatamodel */,
+				04DE9F921E60396C006FD235 /* MakeMePopular.xcdatamodel */,
 			);
-			currentVersion = 04653D5F1E55E769004113C6 /* MakeMePopular.xcdatamodel */;
-			name = MakeMePopular.xcdatamodeld;
-			path = ../../../../MakeMePopular.xcdatamodeld;
-			sourceTree = "<group>";
+			currentVersion = 04DE9F921E60396C006FD235 /* MakeMePopular.xcdatamodel */;
+			path = MakeMePopular.xcdatamodeld;
+			sourceTree = SOURCE_ROOT;
 			versionGroupType = wrapper.xcdatamodel;
 		};
 /* End XCVersionGroup section */

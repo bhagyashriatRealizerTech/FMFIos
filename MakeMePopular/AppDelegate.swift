@@ -53,12 +53,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate,
   
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         
-        //let title:String = ""
-       // let message:String = ""
+       
         if(application.applicationState == UIApplicationState.active) {
             
-            //app is currently active, can update badges count here
-            var type:String = ""
+                      var type:String = ""
             var message:String = ""
             var senderId:String = ""
             var notifId:String = ""
@@ -109,7 +107,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate,
             }
                 else if(type == "SendMessage")
             {
-                print(userInfo)
+                
                 var message:String!
                 var sendby:String!
                 var thid:String!
@@ -118,34 +116,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate,
                 var image:String!
                 var msgid:Any!
                 var initiateid:Any!
-                var notificationId:Any!
-                var gcmid:Any!
-                if let messageID1 = userInfo["messageId"] {
+                              if let messageID1 = userInfo["messageId"] {
                     print("Message ID: \(messageID1)")
                     msgid = messageID1
                     UserDefaults.standard.set(msgid, forKey: "MessageID")
-                    print(msgid)
+                    
                 }
-                if let Gcmid = userInfo["gcm.message_id"] {
-                    print("gcm.message_id ID: \(Gcmid)")
-                    gcmid=Gcmid
-                    print(gcmid)
-                }
-                if let NotificationId = userInfo["NotificationId"] {
-                    print("noti ID: \(NotificationId)")
-                    notificationId=NotificationId
-                    print(notificationId)
-                }
+             
                 if let initiateId1 = userInfo["initiateId"] {
-                    print("Initiate ID: \(initiateId1)")
+                
                     initiateid=initiateId1
                     UserDefaults.standard.set(initiateid, forKey: "InitiateID")
-                    print(initiateid )
+                   
                 }
                 
                 if let img=userInfo["senderThumbnailUrl"] as? String{
                     image=img
-                    print(image)
+                  
                     if(img=="")
                     {
                         UserDefaults.standard.set("", forKey: "SenderPic")
@@ -185,20 +172,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate,
                         
                     }
                 }
-                print(message)
-                print(sendby)
+            
                 
-                let alert0 : AnyObject?=userInfo["aps"] as AnyObject?
-                print(alert0!)
-                let a:AnyObject=alert0 as AnyObject
-                print(a)
+                              
+                
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadMessage"), object: nil)
+                
                 
                 
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadThread"), object: nil)
                 
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadMessage"), object: nil)
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadDash"), object: nil)
+
 
             }
+          
             else if(type == "Emergency"){
                 
                 if let name = userInfo["TroublerName"] as? String {
@@ -273,8 +261,51 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate,
                 }
                 
             }
+           if(type=="ReadReceipt"){
+            print(userInfo)
+                var notid:String=""
+                var msgid:String=""
+                var isRead:String="false"
+                var isdeliver:String="false"
+            var thid:String=""
+                if let NotificationId=userInfo["NotificationId"] as? String{
+                    notid=NotificationId
+                    UserDefaults.standard.set(notid, forKey: "NoticeId")
+                                }
             
-            if(type == "TrackingStarted" || type == "EmergencyRecipt" || type == "Emergency" || type == "FriendRequest" || type == "FriendRequestAccepted"){
+            
+            
+            if let MessageId=userInfo["MessageId"] as? String{
+            
+            msgid=MessageId
+            UserDefaults.standard.set(msgid, forKey: "MsgId")
+            
+            }
+            if let IsRead=userInfo["IsRead"] as? String{
+                
+                isRead=IsRead
+                
+               UserDefaults.standard.set(isRead, forKey: "IsRead")
+                print(isRead)
+            }
+            
+            if let Isdeliver=userInfo["Isdeliver"] as? String{
+                
+                isdeliver=Isdeliver
+                UserDefaults.standard.set(isdeliver, forKey: "IsDeliver")
+                 print(isdeliver)
+                
+            }
+            if let ThreadId=userInfo["ThreadId"] as? String{
+                
+                thid=ThreadId
+                UserDefaults.standard.set(thid, forKey: "ThreadId")
+                
+            }
+            
+             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ReceiveNotification"), object: nil)
+            }
+            if(type == "EmergencyRecipt" || type == "Emergency" || type == "FriendRequest" || type == "FriendRequestAccepted"){
                 let pref = UserDefaults.standard
                 pref.setValue(message, forKey: "MessageText")
                 pref.setValue(senderId, forKey: "SenderID")
@@ -302,7 +333,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate,
             }
             
            
-             print(userInfo)
             
         }
     else if(application.applicationState == UIApplicationState.background){
@@ -322,7 +352,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate,
                 self.getCurrentLocation()
             }
             
-                         if(type == "SendMessage")
+        if(type == "SendMessage")
              {
                 var message:String!
                 var sendby:String!
@@ -332,29 +362,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate,
                 var image:String!
                 var msgid:Any!
                 var initiateid:Any!
-                var notificationId:Any!
-                var gcmid:Any!
+              
                 if let messageID1 = userInfo["messageId"] {
                     print("Message ID: \(messageID1)")
                     msgid = messageID1
                     UserDefaults.standard.set(msgid, forKey: "MessageID")
-                    print(msgid)
+                  
                 }
-                if let Gcmid = userInfo["gcm.message_id"] {
-                    print("gcm.message_id ID: \(Gcmid)")
-                    gcmid=Gcmid
-                    print(gcmid)
-                }
-                if let NotificationId = userInfo["NotificationId"] {
-                    print("noti ID: \(NotificationId)")
-                    notificationId=NotificationId
-                    print(notificationId)
-                }
+                
                 if let initiateId1 = userInfo["initiateId"] {
                     print("Initiate ID: \(initiateId1)")
                     initiateid=initiateId1
                     UserDefaults.standard.set(initiateid, forKey: "InitiateID")
-                    print(initiateid )
+                   
                 }
                 
                 if let img=userInfo["senderThumbanilUrl"] as? String{
@@ -391,19 +411,61 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate,
                         
                     }
                 }
-                print(message)
-                print(sendby)
-                
-                let alert0 : AnyObject?=userInfo["aps"] as AnyObject?
-                print(alert0!)
-                let a:AnyObject=alert0 as AnyObject
-                print(a)
+             
                 
                 
+                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadMessage"), object: nil)
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadThread"), object: nil)
                 
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadMessage"), object: nil)
+               
                 
+            }
+            
+            
+             if(type=="ReadReceipt")
+            {
+                print(userInfo)
+                var notid:String=""
+                var msgid:String=""
+                var isRead:String="false"
+                var isdeliver:String="false"
+                var thid:String=""
+                if let NotificationId=userInfo["NotificationId"] as? String{
+                    notid=NotificationId
+                    UserDefaults.standard.set(notid, forKey: "NoticeId")
+                }
+                
+                
+                
+                if let MessageId=userInfo["MessageId"] as? String{
+                    
+                    msgid=MessageId
+                    UserDefaults.standard.set(msgid, forKey: "MsgId")
+                    
+                }
+                if let IsRead=userInfo["IsRead"] as? String{
+                    
+                    isRead=IsRead
+                    
+                    UserDefaults.standard.set(isRead, forKey: "IsRead")
+                    print(isRead)
+                }
+                
+                if let Isdeliver=userInfo["Isdeliver"] as? String{
+                    
+                    isdeliver=Isdeliver
+                    UserDefaults.standard.set(isdeliver, forKey: "IsDeliver")
+                    print(isdeliver)
+                    
+                }
+                if let ThreadId=userInfo["ThreadId"] as? String{
+                    
+                    thid=ThreadId
+                    UserDefaults.standard.set(thid, forKey: "ThreadId")
+                    
+                }
+                
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ReceiveNotification"), object: nil)
             }
         
         }
@@ -623,18 +685,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate,
                         
                     }
                 }
-                print(message)
-                print(sendby)
+                
                 
                 let alert0 : AnyObject?=userInfo["aps"] as AnyObject?
                 print(alert0!)
                 let a:AnyObject=alert0 as AnyObject
                 print(a)
                 
-                
+                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadMessage"), object: nil)
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadThread"), object: nil)
                 
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadMessage"), object: nil)
+               
                 
             }
             
@@ -730,6 +791,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate,
         return container
     }()
 
+
+    lazy var managedObjectContext: NSManagedObjectContext = {
+        // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.) This property is optional since there are legitimate error conditions that could cause the creation of the context to fail.
+        let coordinator = NSPersistentStoreCoordinator()
+        var managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+        managedObjectContext.persistentStoreCoordinator = coordinator
+       
+        return managedObjectContext
+    }()
     // MARK: - Core Data Saving support
 
     func saveContext () {
@@ -746,6 +816,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate,
                 }
             }
         } else {
+            
+            if managedObjectContext.hasChanges {
+                do {
+                    try managedObjectContext.save()
+                } catch {
+                    // Replace this implementation with code to handle the error appropriately.
+                    // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                    let nserror = error as NSError
+                    NSLog("Unresolved error \(nserror), \(nserror.userInfo)")
+                    abort()
+                }
+            }
             // Fallback on earlier versions
         }
         
@@ -811,11 +893,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate,
                 }
                 print(self.city)
                 
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                let newDate = dateFormatter.string(from: Date())
+                
                 let pref = UserDefaults.standard
                 pref.setValue(self.city, forKey: "UserCity")
                 pref.setValue(adrs, forKey: "UserAdrs")
                 pref.set(locValue.latitude, forKey: "latitude")
                 pref.set(locValue.longitude, forKey: "longitude")
+                pref.set(newDate, forKey: "locationBroadccast")
                 pref.synchronize()
                 
                 if(Reachability.isConnectedToNetwork())

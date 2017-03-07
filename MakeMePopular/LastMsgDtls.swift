@@ -96,7 +96,7 @@ class LastMsgDtls
         }
         
         
-        // return _LastMsgSender
+     
         
     }
     var Lastmsgtext:String
@@ -108,7 +108,7 @@ class LastMsgDtls
             _Lastmsgtext=newValue
         }
         
-        //return _Lastmsgtext
+       
         
     }
     var LastmsgSenderimage:String
@@ -143,8 +143,7 @@ class LastMsgDtls
         _initiateId=InitiateId
         _UnreadCount=UnreadCount
         _lastsenderbyId=LastSenderId
-        print(LastSenderId)
-        print(UnreadCount)
+       
     }
     
     

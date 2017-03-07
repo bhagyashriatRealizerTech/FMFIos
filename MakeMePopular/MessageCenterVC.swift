@@ -86,9 +86,27 @@ class MessageCenterVC: UIViewController ,UIPickerViewDelegate,UIPickerViewDataSo
     @IBAction func selectfriendclick(_ sender: Any) {
         print("selectfriend")
         showActivityIndicator()
-        selectfriendpicker.isHidden=false
-        hideActivityIndicator()
-        hidelabel.isHidden=true
+        if(clist.count < 0)
+        {
+            selectfriendpicker.isHidden=true
+            hideActivityIndicator()
+            hidelabel.text="No friends available in your friendlist"
+            hidelabel.isHidden=false
+        
+        }
+        else if(clist.count>0){
+            
+            selectfriendpicker.isHidden=false
+            hideActivityIndicator()
+            hidelabel.isHidden=true
+
+        }
+        else{
+            selectfriendpicker.isHidden=true
+            hideActivityIndicator()
+            hidelabel.text="No result found"
+            hidelabel.isHidden=false
+        }
     }
     
     override func viewDidLoad() {
@@ -198,15 +216,15 @@ class MessageCenterVC: UIViewController ,UIPickerViewDelegate,UIPickerViewDataSo
         let friend1=FriendListDetail()
         
         
-        //friend1.deleteallvalues()
+     
         
         let methodName = "getFriendList"
         Current_Url = "\(BASE_URL)\(methodName)"
-        print(Current_Url)
+  
         
         let current_url = URL(string: Current_Url)!
         let time=friend1.getupdateddateoffriend()
-        print(time)
+   
         let userId = UserDefaults.standard.value(forKey: "UserID") as! String
         
         var parameters1 = ["userId":userId,"searchText":"","lastUpdatedDate":time] as [String : Any]
@@ -223,24 +241,17 @@ class MessageCenterVC: UIViewController ,UIPickerViewDelegate,UIPickerViewDataSo
         
         Alamofire.request(current_url, method: .post, parameters: parameters1, encoding: JSONEncoding.default, headers: headers1).responseJSON{ response in
             
-            print(response)
+          
             let result = response.result
-            print("\(result.value)")
-            
+           
+            if(response.response?.statusCode==200)
+            {
             if let dict = result.value  as?  [Dictionary<String,AnyObject>]
                 
             {
                 let res = Mapper<FriendListModel>().mapArray(JSONObject: dict)
-                print(res!)
-                let request=NSFetchRequest<NSFetchRequestResult>(entityName: "FriendList")
+          
                 
-                
-                do{
-                 
-                        
-                        let searchResults=try self.getContext().fetch(request)
-                        print ("num of results = \(searchResults.count)")
-                        
                         if((res?.count)! > 0)
                         {
                             for i in 0...((res?.count)! - 1)
@@ -250,13 +261,13 @@ class MessageCenterVC: UIViewController ,UIPickerViewDelegate,UIPickerViewDataSo
                                 if(isfriend == true)
                                 {
                                     
-                                    print("available")
+                                    
                                     //update....
                                     
                                 }
                                     
                                 else{
-                                    print("inserting here")
+                                 
                                     friend1.insertfriendlist(friendlist: msg!)
                                     
                                 }
@@ -265,40 +276,33 @@ class MessageCenterVC: UIViewController ,UIPickerViewDelegate,UIPickerViewDataSo
                  
                     else { }
                     
-                    print("Success")
+                   
                     self.clist.removeAll()
                     self.clist=friend1.retrivefriendlist()
-                    print(self.clist.count)
+                  
                     
                     print(self.clist)
                     self.contacts.removeAll()
+                    if(!self.clist.isEmpty)
+                    {
                     for i in 0...(self.clist.count-1){
                         
-                        print(self.clist[i].userId)
-                        print(self.clist[i].FriendId)
-                        print(self.clist[i].username)
                         
                         self.clist.sort(){$0.username < $1.username}
                        let m = self.clist[i].username
-                        print(m)
+                       
                         self.contacts.append(m)
-                        print(self.contacts[i])
+                       
                     }
-                    
-                    print(self.clist.count)
-                    
-                    print(self.contacts.count)
-                    
-                }
-                    
-                catch
-                {
-                    print("no result")
-                }
-                
+                    }
+                    else{
+                    self.selectfriendpicker.isHidden=true
+                        self.hidelabel.isHidden=false
+                    }
+              
             }
             
-            
+            }
             
             if(self.clist.count > 0){
                 self.selectfriendpicker.dataSource=self
@@ -353,7 +357,7 @@ class MessageCenterVC: UIViewController ,UIPickerViewDelegate,UIPickerViewDataSo
         
         Alamofire.request(base_url!,method: .post ,parameters:param,encoding:JSONEncoding.default).responseJSON{ response in
             
-            print(response)
+        
             self.hideActivityIndicator()
             
             
@@ -380,32 +384,10 @@ class MessageCenterVC: UIViewController ,UIPickerViewDelegate,UIPickerViewDataSo
     }
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         selectfriend.setTitle(contacts[row], for: UIControlState())
-        let UId = UserDefaults.standard.value(forKey: "UserID") as! String
-        print(UId)
-        
-//        if(UId==clist[row].userId)
-//        {
-//            userid=clist[row].FriendId
-//        }
-//        else{
-//            userid=clist[row].userId
-//        }
+       
+   
         
         userid=clist[row].frienduserId
-        
-        
-        
-        
-//        if(clist[row].frienduserId != "")
-//        {
-//        userid=clist[row].frienduserId
-//        }
-//        else{
-//            userid=clist[row].frienduserId
-//        }
-        print(row)
-        print(userid)
-        print(self.clist[row].FriendId)
         
         selectfriendpicker.isHidden=true
     }

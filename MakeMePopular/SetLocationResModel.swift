@@ -13,6 +13,8 @@ class SetLocationResModel:Mappable{
     var todaysTrackingCount:NSNumber?
     var lastWeekTrackingCount:NSNumber?
     var lastMonthTrackingCount:NSNumber?
+    var FriendBadgeCount:NSNumber?
+    var ChatBadgeCount:NSNumber?
     
     required init?(map: Map) {
         mapping(map: map)
@@ -24,6 +26,8 @@ class SetLocationResModel:Mappable{
         todaysTrackingCount <- map["todaysTrackingCount"]
         lastWeekTrackingCount <- map["lastWeekTrackingCount"]
         lastMonthTrackingCount <- map["lastMonthTrackingCount"]
+        FriendBadgeCount <- map["FriendBadgeCount"]
+        ChatBadgeCount <- map["ChatBadgeCount"]
     }
 }
 

@@ -17,7 +17,9 @@ import Firebase
 import GoogleMaps
 
 class RegistrationVC: UIViewController , UIPickerViewDelegate,UIPickerViewDataSource,UIImagePickerControllerDelegate, UINavigationControllerDelegate, CLLocationManagerDelegate, GMSMapViewDelegate{
-    
+    var dbmsg=DBMessageList()
+    var dbth=DBThreadList()
+ var friend1=FriendListDetail()
     @IBOutlet weak var register: UIButton!
     @IBOutlet weak var profileImage: UIImageView!
     
@@ -67,7 +69,7 @@ class RegistrationVC: UIViewController , UIPickerViewDelegate,UIPickerViewDataSo
         
         datePickerView.addTarget(self, action: #selector(RegistrationVC.datePickerValueChanged(sender:)), for: UIControlEvents.valueChanged)
         dob.inputView = datePickerView
-        
+        datePickerView.maximumDate=NSDate() as Date
         imagePicker.delegate = self
 
         
@@ -239,9 +241,7 @@ class RegistrationVC: UIViewController , UIPickerViewDelegate,UIPickerViewDataSo
     
     
     @IBAction func registerClick(_ sender: Any) {
-        
-        
-        
+    
         var refreshedToken = ""
         if(FIRInstanceID.instanceID().token() != nil){
             refreshedToken = FIRInstanceID.instanceID().token()!
@@ -343,6 +343,9 @@ class RegistrationVC: UIViewController , UIPickerViewDelegate,UIPickerViewDataSo
             
             if(Reachability.isConnectedToNetwork()){
                 self.showActivityIndicator()
+                dbth.deleteallvalues()
+                friend1.deleteallvalues()
+                dbmsg.deleteallvalues()
             registerUser(completed: {}, userdetail: userdetail)
             }
             else {

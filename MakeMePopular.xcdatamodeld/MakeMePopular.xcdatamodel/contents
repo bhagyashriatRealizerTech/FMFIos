@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="15G31" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="FriendList" representedClassName="FriendList" syncable="YES" codeGenerationType="class">
+        <attribute name="allowTrackingTillDate" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="createTS" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="friendName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="friendsId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="friendsUserId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="friendThumbnailUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isdeleted" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isEmergencyAlert" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isMessagingAllowed" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isRequestSent" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isTrackingAllowed" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="trackingStatusChangeDate" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userId" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="MessageList" representedClassName="MessageList" syncable="YES" codeGenerationType="class">
+        <attribute name="isDeliver" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isRead" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isSend" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="message" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="messageId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="receiverId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="senderId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="senderName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="senderThumbnail" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="threadId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timeStamp" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Threadlist" representedClassName="Threadlist" syncable="YES" codeGenerationType="class">
+        <attribute name="badgeCount" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="initiateId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="initiateName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastMessageId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastMessageText" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastSenderById" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastSenderName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="participantList" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="threadCustomName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="threadId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="threadName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="thumbnailUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timeStamp" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="FriendList" positionX="-63" positionY="-18" width="128" height="255"/>
+        <element name="MessageList" positionX="-54" positionY="99" width="128" height="210"/>
+        <element name="Threadlist" positionX="-36" positionY="117" width="128" height="240"/>
+    </elements>
+</model>

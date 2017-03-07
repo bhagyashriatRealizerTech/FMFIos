@@ -29,7 +29,8 @@ class UserDetail: Mappable{
     var deviceId:String?
     var fcmRegId:String?
     var authToken:String?
-  
+    var FriendBadgeCount:String?
+    var ChatBadgeCount:String?
     required init?(map: Map) {
         
     }
@@ -53,6 +54,8 @@ class UserDetail: Mappable{
         lastMonthTrackedCount <- map["lastMonthTrackedCount"]
         lastCity <- map["lastCity"]
         authToken <- map["authToken"]
+        FriendBadgeCount <- map["FriendBadgeCount"]
+        ChatBadgeCount<-map["ChatBadgeCount"]
         
     }
     init() {

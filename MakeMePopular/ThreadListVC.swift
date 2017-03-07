@@ -50,7 +50,7 @@ class ThreadListVC: UIViewController,UITableViewDataSource,UITableViewDelegate {
     {
         super.viewDidLoad()
         
-        
+       
         
         let singleTap = UITapGestureRecognizer(target: self, action: #selector(ThreadListVC.didBackTapDetected))
         singleTap.numberOfTapsRequired = 1 // you can change this value
@@ -59,7 +59,7 @@ class ThreadListVC: UIViewController,UITableViewDataSource,UITableViewDelegate {
         
         back.image = UIImage.fontAwesomeIcon(name: .chevronLeft, textColor: UIColor.white, size: CGSize(width: 40, height: 45))
         
-        if(LastMsgList.count<0)
+        if(LastMsgList.count==0)
         {
           tableview.isHidden=true
             hidelable.isHidden=false
@@ -67,6 +67,7 @@ class ThreadListVC: UIViewController,UITableViewDataSource,UITableViewDelegate {
         }
         else{
             tableview.reloadData()
+           
             tableview.isHidden=false
             hidelable.isHidden=true
             hideview.isHidden=true
@@ -76,7 +77,7 @@ class ThreadListVC: UIViewController,UITableViewDataSource,UITableViewDelegate {
       
         
         NotificationCenter.default.addObserver(self, selector: #selector(loadList(notification:)),name:NSNotification.Name(rawValue: "loadThread"), object: nil)
-        LastMsgList.removeAll()
+ 
         navigationController?.navigationBar.barTintColor=UIColor(red: 2/255, green: 174/255, blue: 239/255, alpha: 1)
         navigationController?.navigationBar.isHidden=false
         
@@ -118,8 +119,8 @@ class ThreadListVC: UIViewController,UITableViewDataSource,UITableViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         
         super.viewWillAppear(animated)
-//        if(LastMsgList.count>0)
-//        {
+   
+
             let backgroundImage = #imageLiteral(resourceName: "gradient_bg")
             let imageView = UIImageView(image: backgroundImage)
             
@@ -130,13 +131,9 @@ class ThreadListVC: UIViewController,UITableViewDataSource,UITableViewDelegate {
             LastMsgList.removeAll()
             tableview.reloadData()
   
-//        }
-//        else{
-//            tableview.isHidden=true
-//            hideview.isHidden=false
-//            hidelable.isHidden=false
-//        }
+
                 if Reachability.isConnectedToNetwork() == true{
+                    
                     if(!LastMsgList.isEmpty)
                     {
                         LastMsgList.removeAll()
@@ -144,7 +141,8 @@ class ThreadListVC: UIViewController,UITableViewDataSource,UITableViewDelegate {
                         
                     }
                     else{
-                        
+                        getFriendList {}
+                    //    self.LastMsgList=dbMsg.retriveallrecords()
                         downloadthreadlistDetails {}
                         
                     }
@@ -172,6 +170,9 @@ class ThreadListVC: UIViewController,UITableViewDataSource,UITableViewDelegate {
         
     }
    
+    
+    
+    
         func downloadthreadlistDetails(completed: @escaping DownloadComplete){
         let dbMsg = DBThreadList()
     
@@ -187,38 +188,39 @@ class ThreadListVC: UIViewController,UITableViewDataSource,UITableViewDelegate {
         let m = Chat_URL + "GetThreadList"
         
         let time=dbMsg.getupdateddateofthread()
-        print(time)
-      // dbMsg.deleteallvalues()
-        
-        var headers:[String:String] = ["userId":uid,"Time":time]
+      
+  
+            let fcmtk:String=UserDefaults.standard.value(forKey: "FCMToken") as! String
+            
+            var headers:[String:String] = ["userId":uid,"Time":time,"fcmToken":fcmtk]
         if(time == ""){
-            headers = ["userId":uid]
+            headers = ["userId":uid,"fcmToken":fcmtk]
         }
-        self.showActivityIndicator()
-        var base_url:URL? = nil
+          var base_url:URL? = nil
         base_url = URL(string: m )
-        print(base_url!)
+      print(base_url!)
         LastMsgList.removeAll()
         
         Alamofire.request(m,method: .get,headers: headers).responseJSON{
             
             response in
-            
-            let result = response.result
             print(response)
-            
-            
+            let result = response.result
+         
+          //print(response)
+            if(response.response?.statusCode==200)
+            {
             if let dict = result.value  as?  [Dictionary<String,AnyObject>]
                 
             {
                 let res = Mapper<ThreadlistModel>().mapArray(JSONObject: dict)
-                print(res!)
                 
-                do{
+                
+              
                     if #available(iOS 10.0, *) {
                         
-                        let searchResults=try self.getContext().fetch(request)
-                        print ("num of results = \(searchResults.count)")
+                      
+                       
                         
                         if((res?.count)! > 0)
                         {
@@ -226,13 +228,7 @@ class ThreadListVC: UIViewController,UITableViewDataSource,UITableViewDelegate {
                             {
                                 let msg = res?[i]
                                 let isThreadPresent:Bool = dbMsg.getThread(threadId: (msg?.threadId)!)
-                                print(msg?.threadId!)
-//                                let isreceiverid:Bool=dbMsg.getreceiverId(receiverId: LastMsg.receiverId)
-//                                if(isreceiverid==false)
-//                                {
-//                                    print("not reciver")
-//                                }
-//
+                            
                                 if(isThreadPresent == true)
                                 {
                                     
@@ -250,51 +246,16 @@ class ThreadListVC: UIViewController,UITableViewDataSource,UITableViewDelegate {
                     }
                     else {
                     
-                        if((res?.count)! > 0)
-                        {
-                            for i in 0...((res?.count)! - 1)
-                            {
-                                let msg = res?[i]
-                                print(msg)
-                                let isThreadPresent:Bool = dbMsg.getThread(threadId: (msg?.threadId)!)
-                                print(msg?.threadId!)
-                                //                                let isreceiverid:Bool=dbMsg.getreceiverId(receiverId: LastMsg.receiverId)
-                                //                                if(isreceiverid==false)
-                                //                                {
-                                //                                    print("not reciver")
-                                //                                }
-                                //
-                                if(isThreadPresent == true)
-                                {
-                                    
-                                    
-                                    dbMsg.updatethreadlist(threadlist: msg!)
-                                }
-                                    
-                                else{
-                                    
-                                    dbMsg.insertthreadlist(threadlist: msg!)
-                                    
-                                }
-                            }
-                        }
-                    
-                    
                     
                     }
                     
-                    print("Success")
+                
                     self.LastMsgList = dbMsg.retriveallrecords()
              
-                    print(self.LastMsgList)
+               
                     
                     
-                }
-                    
-                catch
-                {
-                    print("no result")
-                }
+               
                 if(self.LastMsgList.count != 0)
                 {
                     self.tableview.isHidden=false
@@ -332,6 +293,7 @@ class ThreadListVC: UIViewController,UITableViewDataSource,UITableViewDelegate {
                 self.hideActivityIndicator()
                 self.loadingView.backgroundColor=UIColor.white
                 
+            }
             }
             
         }
@@ -387,22 +349,21 @@ class ThreadListVC: UIViewController,UITableViewDataSource,UITableViewDelegate {
             
             
             let d1 = LastMsg.LastMsgTime.components(separatedBy: "T")[0]
-            print(LastMsg.UnreadCount)
             
             
             let dateinput1 = dateformat1.date(from: d1)
             let dateip = dateformat1.string(from: dateinput1!)
             
             let datelocal=dateobj.getLocalDate(utcDate:LastMsg.LastMsgTime)
-            print(datelocal)
+        
             
             let dateinput = dateobj.getDate(date: dateip, FLAG: "D",t:datelocal)
-            print(dateinput)
+      
             
             
             
                       
-            print(LastMsg.LastMsgTime)
+    
           
             
             
@@ -418,10 +379,10 @@ class ThreadListVC: UIViewController,UITableViewDataSource,UITableViewDelegate {
                 c1=" "
                 
             }
-            
-
            
-            cell.updateCell(threadname: LastMsg.ThreadName, lastMsgtext: "\(LastMsg.LastMsgSender):\(LastMsg.Lastmsgtext)", lastMsgSenderImg: LastMsg.LastmsgSenderimage, LastMsgTime: dateinput,Unreadcount:c1 )
+
+            cell.updateCell(threadname: LastMsg.ThreadName, lastMsgtext: "\(LastMsg.LastMsgSender):\(LastMsg.Lastmsgtext)", lastMsgSenderImg: LastMsg.LastmsgSenderimage, LastMsgTime: dateinput,Unreadcount:c1,LastSenderName: LastMsg.LastMsgSender)
+       
             return cell
             
             
@@ -454,17 +415,91 @@ class ThreadListVC: UIViewController,UITableViewDataSource,UITableViewDelegate {
         
         
         dbMsg.updatebadgecount(threadlist:LastMsg.UnreadCount)
-      //  dbMsg.retriveallrecords()
+     
         LastMsg.UnreadCount="0"
         performSegue(withIdentifier: "SgueMessageCenter", sender: LastMsg)
         
     }
+    
+    func getFriendList(completed: @escaping DownloadComplete)
+    {
+        let friend1=FriendListDetail()
+        
+        
+        //friend1.deleteallvalues()
+        
+        let methodName = "getFriendList"
+        Current_Url = "\(BASE_URL)\(methodName)"
+        
+        
+        let current_url = URL(string: Current_Url)!
+        let time=friend1.getupdateddateoffriend()
+        
+        let userId = UserDefaults.standard.value(forKey: "UserID") as! String
+        
+        var parameters1 = ["userId":userId,"searchText":"","lastUpdatedDate":time] as [String : Any]
+        if(time=="")
+        {
+            parameters1=["userId":userId,"searchText":""] as [String : Any]
+            
+        }
+        
+        let headers1:HTTPHeaders = ["Content-Type": "application/json",
+                                    "Accept": "application/json"]
+        
+        print(current_url)
+        
+        Alamofire.request(current_url, method: .post, parameters: parameters1, encoding: JSONEncoding.default, headers: headers1).responseJSON{ response in
+            
+            
+            let result = response.result
+            
+            
+            if let dict = result.value  as?  [Dictionary<String,AnyObject>]
+                
+            {
+                let res = Mapper<FriendListModel>().mapArray(JSONObject: dict)
+                
+                
+                if((res?.count)! > 0)
+                {
+                    for i in 0...((res?.count)! - 1)
+                    {
+                        let msg = res?[i]
+                        let isfriend:Bool=friend1.getfriends(friendId: (msg?.friendsUserId)!)
+                        if(isfriend == true)
+                        {
+                            
+                            
+                            //update....
+                            
+                        }
+                            
+                        else{
+                            
+                            friend1.insertfriendlist(friendlist: msg!)
+                            
+                        }
+                    }
+                }
+                    
+                else { }
+                
+                
+                
+                
+            }
+            
+            completed()
+        }
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? SelectMessageCenterListVC
         {
             if let msg = sender as? LastMsgDtls{
-                let threadid:String=msg.ThreadId
-                print(threadid)
+               
+         
                 
                 destination.LastThreadMsg = msg
                 
@@ -473,7 +508,7 @@ class ThreadListVC: UIViewController,UITableViewDataSource,UITableViewDelegate {
     }
     func showActivityIndicator() {
         
-        // UIApplication.shared.isNetworkActivityIndicatorVisible = true
+     
         
         DispatchQueue.main.async {
             let utils = Utils()

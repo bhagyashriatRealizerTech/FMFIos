@@ -30,19 +30,19 @@ class LastMessageTableCell: UITableViewCell {
         
     }
     
-    func updateCell(threadname:String,lastMsgtext:String,lastMsgSenderImg:String,LastMsgTime:String,Unreadcount:String)
+    func updateCell(threadname:String,lastMsgtext:String,lastMsgSenderImg:String,LastMsgTime:String,Unreadcount:String,LastSenderName:String)
     {
         readc.isUserInteractionEnabled=false
-      // readc.isHidden=true
+  
         lblLastMsgSender.text = threadname;
         lblLastMsg.text = lastMsgtext;
         lblLastMsgTime.text=LastMsgTime;
         
-        print(Unreadcount)
+     
         if(Unreadcount != "0")
         {
             readc.isHidden=false
-           //readc.layer.borderWidth = 4.0;
+        
             readc.layer.cornerRadius = 10;
             readc.titleLabel?.text=Unreadcount
             readc.setTitle(Unreadcount, for: .normal)
@@ -52,10 +52,11 @@ class LastMessageTableCell: UITableViewCell {
             readc.isHidden=true
             readc.isEnabled=false
         }
-        let v=lblLastMsgSender.text
-        let stArr = v?.components(separatedBy: " ")
+        let v=LastSenderName
+      
+        let stArr = v.components(separatedBy: " ")
         var st=""
-        for s in stArr!{
+        for s in stArr{
             if let      str=s.characters.first{
                 st+=String(str).capitalized
             }
@@ -77,8 +78,7 @@ class LastMessageTableCell: UITableViewCell {
     }
     func updateCell1(threadname:String,lastMsgtext:String,lastMsgSenderImg:String,LastMsgTime:String)
     {
-        //readc.isUserInteractionEnabled=false
-        // readc.isHidden=true
+        
         lblLastMsgSender.text = threadname;
         lblLastMsg.text = lastMsgtext;
         lblLastMsgTime.text=LastMsgTime;

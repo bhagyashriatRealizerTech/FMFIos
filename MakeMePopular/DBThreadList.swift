@@ -208,7 +208,60 @@ class DBThreadList: NSObject {
     }
     
     
-    
+    func updatebadgecountthread(threadlist:String)
+    {
+        let appdel:AppDelegate=UIApplication.shared.delegate as! AppDelegate
+        if #available(iOS 10.0, *) {
+            context = appdel.persistentContainer.viewContext
+        } else {
+            // Fallback on earlier versions
+        }
+        
+        
+        let request=NSFetchRequest<NSFetchRequestResult>(entityName: "Threadlist")
+        
+        
+        let predicate = NSPredicate(format: "threadId == %@", threadlist)
+        request.predicate = predicate
+        print(threadlist)
+        let b="0"
+        do {
+            //go get the results
+            if #available(iOS 10.0, *) {
+                let searchResults = try getContext().fetch(request)
+                print ("num of results = \(searchResults.count)")
+                
+                //You need to convert to NSManagedObject to use 'for' loops
+                for trans in searchResults as! [NSManagedObject] {
+                    //get the Key Value pairs (although there may be a better way to do that...
+                    //  threadlist="0"
+                    trans.setValue("0", forKey: "badgeCount")
+                    print(threadlist)
+                    print(b)
+                    //save the object
+                    do {
+                        try context.save()
+                        print("saved!")
+                    } catch let error as NSError  {
+                        print("Could not save \(error), \(error.userInfo)")
+                    } catch {
+                        
+                    }
+                    
+                }
+                
+            } else {
+                // Fallback on earlier versions
+            }
+            
+            //I like to check the size of the returned results!
+        }
+        catch {
+            // Do something in response to error condition
+        }
+        
+        
+    }
     func updatebadgecount(threadlist:String)
     {
         let appdel:AppDelegate=UIApplication.shared.delegate as! AppDelegate
@@ -238,6 +291,7 @@ class DBThreadList: NSObject {
                  //  threadlist="0"
                     trans.setValue(b, forKey: "badgeCount")
                     print(threadlist)
+                    print(b)
                     //save the object
                     do {
                         try context.save()
@@ -310,81 +364,75 @@ class DBThreadList: NSObject {
             do{
                 let searchResults = try self.getContext().fetch(request)
                 
-                print ("num of results = \(searchResults.count)")
+    
                 
                 //You need to convert to NSManagedObject to use 'for' loops
                 for trans in searchResults as! [NSManagedObject] {
                     //get the Key Value pairs (although there may be a better way to do that...
                     var threadId:String = ""
-                    var threadName:String=""
+                  
                     var thumbnailUrl:String=""
                     var lastSenderName:String!
                     var badgeCount:String=""
                     var timeStamp:String=""
                     var lastSenderById:String=""
-                    var lastMessageId:String=""
+                  
                     var lastMessageText:String=""
                     var initiateId:String=""
-                    var initiateName:String=""
+                 
                     var threadCustomName:String=""
                     var participantList:String=""
                     if(trans.value(forKey: "threadId") != nil){
                         threadId=trans.value(forKey: "threadId") as! String
-                        print(threadId)
+                        
                     }
-                    if(trans.value(forKey: "threadName") != nil){
-                        threadName=trans.value(forKey: "threadName") as! String
-                        print(threadName)
-                    }
+                    
                     
                     if(trans.value(forKey: "thumbnailUrl") != nil){
                         thumbnailUrl=trans.value(forKey: "thumbnailUrl") as! String
-                        print(thumbnailUrl)
+                       
                     }
                     if(trans.value(forKey: "lastSenderName") != nil){
                         lastSenderName=trans.value(forKey: "lastSenderName") as! String
-                        print(lastSenderName)
+                      
                     }
                     if(trans.value(forKey: "badgeCount") != nil){
                         badgeCount=trans.value(forKey: "badgeCount") as! String
-                        print(badgeCount)
+                      
                     }
                     if(trans.value(forKey: "timeStamp") != nil){
                         timeStamp=trans.value(forKey: "timeStamp") as! String
-                        print(timeStamp)
+                     
                     }
                     if(trans.value(forKey: "lastSenderById") != nil){
                         lastSenderById=trans.value(forKey: "lastSenderById") as! String
-                        print(lastSenderById)
+                       
                     }
                     
-                    if(trans.value(forKey: "lastMessageId") != nil){
-                        lastMessageId=trans.value(forKey: "lastMessageId") as! String
-                        print(lastMessageId)
-                    }
+                    
+                    
                     if(trans.value(forKey: "lastMessageText") != nil){
                         lastMessageText=trans.value(forKey: "lastMessageText") as! String
-                        print(lastMessageText)
+                        
                     }
                     
                     if(trans.value(forKey: "initiateId") != nil){
                         initiateId=trans.value(forKey:  "initiateId") as! String
-                        print(initiateId)
+                      
                     }
-                    if(trans.value(forKey: "initiateName") != nil){
-                        initiateName=trans.value(forKey:   "initiateName") as! String
-                        print(initiateName)
-                    }
+                   
                     if(trans.value(forKey: "threadCustomName") != nil){
                         threadCustomName=trans.value(forKey: "threadCustomName") as! String
-                        print(threadCustomName)
+                        
                     }
                     if(trans.value(forKey: "participantList") != nil){
                         participantList=trans.value(forKey: "participantList") as! String
-                        print(participantList)
+                        
                     }
                    
                     let thread0=LastMsgDtls(LastMsgSender: lastSenderName, Lastmsgtext: lastMessageText, LastMsgTime:  timeStamp, LastmsgSenderimage: thumbnailUrl, ThreadName: threadCustomName,ThreadId: threadId,reciverId:participantList,InitiateId:initiateId,UnreadCount:badgeCount,LastSenderId:lastSenderById)
+                    
+                    
                                       LastMsgList.append(thread0)
                 }
                 

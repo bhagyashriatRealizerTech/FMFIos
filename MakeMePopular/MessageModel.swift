@@ -20,7 +20,9 @@ class MessageModel: Mappable {
     var receiverId:String?
     var senderName:String?
     var senderThumbnail:String?
-    
+    var isRead:Bool?
+    var isDeliver:Bool?
+    var isSend:Bool=true
     
     required init?(map: Map) {
         
@@ -36,6 +38,11 @@ class MessageModel: Mappable {
         threadId <- map["threadId"]
         receiverId <- map["receiverId"]
         senderName <- map["senderName"]
+        
+        isRead <- map["isRead"]
+        isDeliver <- map["isDeliver"]
+       isSend <- map["isSend"]
+        
         print(senderName!)
         senderThumbnail <- map["senderThumbnail"]
         

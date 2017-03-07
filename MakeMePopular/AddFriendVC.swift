@@ -206,6 +206,14 @@ class AddFriendVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
                     self.addFriendTable.isHidden = false
 
                 }
+                else{
+                    let credentialerror = UIAlertController(title: "Add Friend", message: "No People Found Matching Your Specified Search Criteria.", preferredStyle: .alert)
+                    
+                    let cancelAction = UIAlertAction(title: "Ok", style: .cancel, handler:nil)
+                    
+                    credentialerror.addAction(cancelAction)
+                    self.present(credentialerror, animated: true, completion: {  })
+                }
                 self.view.isUserInteractionEnabled = true
                 self.hideActivityIndicator()
                 

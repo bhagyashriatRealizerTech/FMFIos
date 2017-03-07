@@ -41,7 +41,8 @@ class SetLocationAPI{
                 pref.set(obj?.todaysTrackingCount?.stringValue, forKey: "TodayTrack")
                 pref.set(obj?.lastWeekTrackingCount?.stringValue, forKey: "LastWeek")
                 pref.set(obj?.lastMonthTrackingCount?.stringValue, forKey: "LastMonth")
-               
+                pref.set(obj?.FriendBadgeCount?.stringValue,forKey:"FriendCount")
+                pref.set(obj?.ChatBadgeCount?.stringValue,forKey:"ChatCount")
                 print("\(obj?.todaysTrackingCount)")
                 print("\(UserDefaults.standard.value(forKey: "TodayTrack"))")
 

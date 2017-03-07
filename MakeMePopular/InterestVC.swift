@@ -82,7 +82,7 @@ class InterestVC: UIViewController , UICollectionViewDelegate,UICollectionViewDa
             back.addGestureRecognizer(singleTap2)
             
             if(Reachability.isConnectedToNetwork()){
-                self.showActivityIndicator()
+               
                 getUserInterest {}
             }
             else {
@@ -129,8 +129,6 @@ class InterestVC: UIViewController , UICollectionViewDelegate,UICollectionViewDa
         print(current_url)
         
         Alamofire.request(current_url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil).responseJSON{ response in
-            
-            
             
             let respo = response.response?.statusCode
             let result = response.result

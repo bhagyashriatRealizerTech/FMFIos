@@ -51,9 +51,8 @@ class DateUtil{
         dateFormatter.timeZone = NSTimeZone(name: "UTC") as TimeZone!
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         
-        let date = dateFormatter.date(from: tempDate)// create   date from string
+        let date = dateFormatter.date(from: tempDate)// 
         
-        // change to a readable time format and change to local time zone
         dateFormatter.dateFormat = "dd/MM/yyyy h:mm a"
         dateFormatter.timeZone = TimeZone.current
         if(date != nil)
@@ -70,24 +69,24 @@ class DateUtil{
         }
         var datetimevalue:String = ""
         var  resultString :String=""
-        print(date)
+       
         let dateformatter = DateFormatter()
         dateformatter.dateFormat = "yyyy-MM-dd"
         
         let d = dateformatter.date(from: date)
-        //print(d)
+      
         var outdate:String!
         let currentdate:String=dateformatter.string(from: Date())
         let  dateformatter1 = DateFormatter()
         dateformatter1.dateFormat = "dd  MMM yyyy"
         if(d != nil)
         {
-            let d0:Date=d! as Date
-            print(d0)
-            let m1=dateformatter1.string(from: d!)
-            print(m1)
+          
+         
+           
+        
             outdate = dateformatter.string(from: d!)
-            print(outdate)
+         
             
         }
         else{
@@ -113,38 +112,37 @@ class DateUtil{
         
         
         var outtime: String = ""
-        print(date)
-        print(t)
+       
         if(date.components(separatedBy: "").count>0) {
             var E1:String=""
             var time:[String]=[]
             if(t.contains("T"))
             {
                 time = t.components(separatedBy: "T")[1].components(separatedBy: ":")
-                print(time)
+              
             }
             else{
-                let c1=t.components(separatedBy: " ").count
-                print(c1)
+               // let c1=t.components(separatedBy: " ").count
+              
                 time = t.components(separatedBy: " ")[1].components(separatedBy: ":")
-                print(time)
-                if(c1==2)
-                {
-                    if(t.components(separatedBy: " ")[1] != "")                    {
-                    time = t.components(separatedBy: " ")[1].components(separatedBy: ":")
-                        
-                    }
-                }
-                if(t.components(separatedBy: " ")[c1-1] != "")
-                {
-                    E1=t.components(separatedBy: " ")[c1-1]
-                }
-                
+//            
+//                if(c1==2)
+//                {
+//                    if(t.components(separatedBy: " ")[1] != "")                    {
+//                    time = t.components(separatedBy: " ")[1].components(separatedBy: ":")
+//                        
+//                    }
+//                }
+//                if(t.components(separatedBy: " ")[c1-1] != "")
+//                {
+//                    E1=t.components(separatedBy: " ")[c1-1].components(separatedBy: ":")[0]
+//                }
+//                
             }
-             print(time)
+            
             let p=time[0]
             var tp:String = ""
-            print(tp)
+         
             let t=Int(p)
             var t1:Int!
          
@@ -153,13 +151,12 @@ class DateUtil{
             {
             t1=(t! as Int)
             }
-            print(t1)
+           
             if (t1==12)
             {
                 tp = "PM";
-                print(t1)
-                let tm=t1! as Int
-                print(tm)
+              
+                           
                 outtime = String(describing: t1! as Int) + ":" + time[1] + " " + tp;
             }
             else if (t1 > 12) {
@@ -182,15 +179,10 @@ class DateUtil{
                 
                 
                 outtime = time[0] + ":" + time[1] + " " + E1;
-//                if(outtime.contains(" "))
-//                {
-//                  var tm1 =  outtime.components(separatedBy: " ")[0]
-//                    outtime=tm1
-//                }
-                
+
             }
         }
-        print(outtime)
+       
         if (FLAG=="D" || FLAG=="DT") {
             
             //Current Date Message
@@ -201,9 +193,7 @@ class DateUtil{
                 let cal=NSCalendar.current
                 let oneDayAgo = cal.date(byAdding: .day, value: -1, to: Date())
                 let d1 = dateformatter.string(from: oneDayAgo!)
-                // cal.add(Calendar.DATE, -1);
-                
-                //Yesterdays Message
+               
                 if (outdate == d1) {
                     datetimevalue = "Yesterday";
                     
@@ -212,7 +202,7 @@ class DateUtil{
                     var daysago = dateformatter.string(from: twodaysAgo!)
                     
                     
-                    // cal.add(Calendar.DATE, -1);
+                   
                     
                     
                     var count = -3
@@ -260,4 +250,128 @@ class DateUtil{
         }
         return datetimevalue;
     }
+    
+    
+    func getDateforday(date:String , FLAG: String,t:String) ->String{
+        if(date == "")
+        {
+            return ""
+        }
+        var datetimevalue:String = ""
+        var  resultString :String=""
+        
+        let dateformatter = DateFormatter()
+        dateformatter.dateFormat = "yyyy-MM-dd"
+        
+        let d = dateformatter.date(from: date)
+        
+        var outdate:String!
+        let currentdate:String=dateformatter.string(from: Date())
+        let  dateformatter1 = DateFormatter()
+        dateformatter1.dateFormat = "dd  MMM yyyy"
+        if(d != nil)
+        {
+            
+            
+            
+            
+            outdate = dateformatter.string(from: d!)
+            
+            
+        }
+        else{
+            
+            let inputFormatter = DateFormatter()
+            inputFormatter.dateFormat = "MM/dd/yyyy HH:mm:ss"
+            
+            let outputFormatter = DateFormatter()
+            outputFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            
+            let showDate = inputFormatter.date(from: t)
+            if(showDate != nil)
+            {
+                resultString = outputFormatter.string(from: showDate!)
+                outdate=dateformatter.string(from: showDate!)
+                
+            }
+            
+            print(resultString)
+            
+            
+        }
+        
+        
+        let outtime: String = ""
+        if (FLAG=="D" || FLAG=="DT") {
+            
+            //Current Date Message
+            if (outdate == currentdate && outdate != "") {
+                datetimevalue = "Today"
+                
+            } else {
+                let cal=NSCalendar.current
+                let oneDayAgo = cal.date(byAdding: .day, value: -1, to: Date())
+                let d1 = dateformatter.string(from: oneDayAgo!)
+                
+                if (outdate == d1) {
+                    datetimevalue = "Yesterday";
+                    
+                } else {
+                    var twodaysAgo = cal.date(byAdding: .day, value: -2, to: Date())
+                    var daysago = dateformatter.string(from: twodaysAgo!)
+                    
+                    
+                    
+                    
+                    
+                    var count = -3
+                    for i in 0...5
+                    {
+                        if (outdate == daysago) {
+                            let day:Int = cal.component(.weekday, from: twodaysAgo!)
+                            datetimevalue = getDayOfWeek(day: day)
+                            break
+                        }
+                        else{
+                            if (i == 4) {
+                                if(d != nil){
+                                    datetimevalue = dateformatter1.string(from: d!)
+                                }
+                                else{
+                                    
+                                    datetimevalue = t
+                                }
+                                
+                                
+                            } else
+                            {
+                                twodaysAgo = cal.date(byAdding: .day, value: count, to: Date())
+                                daysago = dateformatter.string(from: twodaysAgo!)
+                                count  = count-1
+                            }
+                        }
+                        
+                    }
+                }
+                
+                if (FLAG == "DT")
+                {
+                    datetimevalue = datetimevalue + " " + outtime
+                }
+                else {
+                    if(FLAG == "T"){
+                        datetimevalue = outtime
+                    }
+                    
+                }
+                
+            }
+        }
+        return datetimevalue;
+    }
+    
+
+        
+    
+    
 }

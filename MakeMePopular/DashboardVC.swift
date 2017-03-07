@@ -11,11 +11,13 @@ import GoogleMaps
 import Charts
 import FontAwesome_swift
 import Alamofire
-
+import ObjectMapper
 class DashboardVC:UIViewController, UICollectionViewDelegate,UICollectionViewDataSource, UINavigationControllerDelegate, CLLocationManagerDelegate, GMSMapViewDelegate{
     
     var dashboard=["Emergency","Friend Near","Add Friend","Invite Friend","Places Near","Friend List","Notification","Chat","Album"]
-    
+    var  chcount:Int=0
+    var frdcount:Int=0
+
     var trackingDay: [String]!
     let locationManager = CLLocationManager()
     var city:String = ""
@@ -39,12 +41,20 @@ class DashboardVC:UIViewController, UICollectionViewDelegate,UICollectionViewDat
     @IBOutlet weak var chartview: HorizontalBarChartView!
     var isSettingsOpen:Bool = false
     
-    
-    override func viewDidLoad() {
+    override func viewDidAppear(_ animated: Bool) {
         
+    }
+    override func viewDidLoad() {
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+          print(version)
+        }
+        
+        getdashbordcounts {
+            
+        }
+        NotificationCenter.default.addObserver(self, selector: #selector(loadList(notification:)),name:NSNotification.Name(rawValue: "loadDash"), object: nil)
         dashboardCV.delegate = self
         dashboardCV.dataSource = self
-        
         
         grapfv.layer.shadowOpacity = 0.5
         grapfv.layer.shadowOffset = CGSize(width: 3.0, height: 2.0)
@@ -55,7 +65,7 @@ class DashboardVC:UIViewController, UICollectionViewDelegate,UICollectionViewDat
         dashboardCV.layer.shadowOffset = CGSize(width: 3.0, height: 2.0)
         dashboardCV.layer.shadowRadius = 5.0
         dashboardCV.layer.shadowColor = UIColor.black.cgColor
-        
+      
         if(view.bounds.width > 320){
             if let layout = dashboardCV.collectionViewLayout as? UICollectionViewFlowLayout {
                 print("\(view.bounds.width)")
@@ -82,8 +92,8 @@ class DashboardVC:UIViewController, UICollectionViewDelegate,UICollectionViewDat
         
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self
+            locationManager.distanceFilter = 50
             locationManager.allowsBackgroundLocationUpdates = true
-            locationManager.distanceFilter = 100
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             locationManager.startUpdatingLocation()
         }
@@ -97,7 +107,15 @@ class DashboardVC:UIViewController, UICollectionViewDelegate,UICollectionViewDat
         }
     
     }
-    
+    func loadList(notification: NSNotification)->Int{
+        
+        
+        
+        chcount=chcount+1
+        return chcount
+        
+    }
+
     func setUpView(){
     
         
@@ -181,7 +199,11 @@ class DashboardVC:UIViewController, UICollectionViewDelegate,UICollectionViewDat
     
     override func viewWillAppear(_ animated: Bool) {
         
-         NotificationCenter.default.addObserver(self, selector: #selector(DashboardVC.recievedNotification), name: NSNotification.Name(rawValue: "recievednotif"), object: nil)
+       
+         NotificationCenter.default.addObserver(self, selector: #selector(DashboardVC.recievedNotification), name: NSNotification.Name(rawValue: "loadList"), object: nil)
+        getdashbordcounts {
+            
+        }
         
          setUpView()
     }
@@ -253,6 +275,10 @@ class DashboardVC:UIViewController, UICollectionViewDelegate,UICollectionViewDat
         
     }
     
+    
+    
+    
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let locValue:CLLocationCoordinate2D = manager.location!.coordinate
         print("locations = \(locValue.latitude) \(locValue.longitude)")
@@ -286,7 +312,25 @@ class DashboardVC:UIViewController, UICollectionViewDelegate,UICollectionViewDat
                     print(adrs)
                 }
                 print(self.city)
+                
+                
+                
+                
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                let newDate = dateFormatter.string(from: Date())
+                
+                var firstBroadcast = dateFormatter.date(from: newDate)
                
+                
+                if(UserDefaults.standard.value(forKey: "locationBroadccast") != nil){
+                    if(UserDefaults.standard.value(forKey: "locationBroadccast")as! String != ""  || UserDefaults.standard.value(forKey: "locationBroadccast")as! String != "nil"){
+                    let dateString = UserDefaults.standard.value(forKey: "locationBroadccast") as! String
+                    
+                    firstBroadcast = dateFormatter.date(from: dateString)!
+                    }
+                }
+                
                 let pref = UserDefaults.standard
                 pref.setValue(self.city, forKey: "UserCity")
                 pref.setValue(adrs, forKey: "UserAdrs")
@@ -294,25 +338,97 @@ class DashboardVC:UIViewController, UICollectionViewDelegate,UICollectionViewDat
                 pref.set(locValue.longitude, forKey: "longitude")
                 pref.synchronize()
                 
-                if(Reachability.isConnectedToNetwork())
-                {
-                let setlocapi = SetLocationAPI()
-                setlocapi.setCoOrdinates(completed: {}, coordinates: location, City: self.city)
-                }else {
-                    
-                    let credentialerror = UIAlertController(title: "No Internet Connection", message: "Make sure your device is connected to the internet.", preferredStyle: .alert)
-                    
-                    let cancelAction = UIAlertAction(title: "Ok", style: .cancel, handler:nil)
-                    
-                    credentialerror.addAction(cancelAction)
-                    self.present(credentialerror, animated: true, completion: {  })
-                    
+                let diff = Date().offsetFrom(date: firstBroadcast!)
+                
+                let diffArr = diff.components(separatedBy: ":")
+                if(Int(diffArr[0])! > 0 || Int(diffArr[1])! > 0 || Int(diffArr[2])! > 29){
+                    if(Reachability.isConnectedToNetwork())
+                    {
+                        pref.set(newDate, forKey: "locationBroadccast")
+                        pref.synchronize()
+                        let setlocapi = SetLocationAPI()
+                        setlocapi.setCoOrdinates(completed: {}, coordinates: location, City: self.city)
+                    }else {
+                        
+                        let credentialerror = UIAlertController(title: "No Internet Connection", message: "Make sure your device is connected to the internet.", preferredStyle: .alert)
+                        
+                        let cancelAction = UIAlertAction(title: "Ok", style: .cancel, handler:nil)
+                        
+                        credentialerror.addAction(cancelAction)
+                        self.present(credentialerror, animated: true, completion: {  })
+                        
+                    }
                 }
-
                 
             }
             
         })
+    }
+    func getdashbordcounts(completed: @escaping DownloadComplete)
+    {
+        let methodName = "getDashboardBadgeCounts/"
+        let userId = UserDefaults.standard.value(forKey: "UserID") as! String
+
+        Current_Url = "\(BASE_URL)\(methodName)\(userId)"
+        
+        
+        let current_url = URL(string: Current_Url)!
+
+        
+        
+              
+        print(current_url)
+        
+        Alamofire.request(current_url, method: .get, encoding: JSONEncoding.default).responseJSON{ response in
+            
+            
+            let result = response.result
+            
+            print(response)
+            if let dict = result.value  as?  Dictionary<String,AnyObject>
+                
+            {
+               
+                
+                if(!(dict["chatBadgeCount"] as? Int == 0))
+                {
+                    
+                    self.chcount = (dict["chatBadgeCount"] as? Int)!
+                    
+                    UserDefaults.standard.set(self.chcount, forKey: "ChatCount")
+                    print(self.chcount)
+                }
+                else{
+                
+                
+                 UserDefaults.standard.set(0, forKey: "ChatCount")
+                print(self.chcount)
+                }
+                
+                
+                
+                if(!(dict["friendBadgeCount"] as? Int == 0 ))
+                {
+                    self.frdcount=(dict["friendBadgeCount"] as? Int)!
+                    UserDefaults.standard.set(self.frdcount, forKey: "FriendCount")
+                    print(self.frdcount)
+                }
+                else{
+                
+                  UserDefaults.standard.set(0, forKey: "FriendCount")
+                    print(self.frdcount)
+                }
+
+                
+                self.dashboardCV.reloadData()
+            }
+            
+            completed()
+        }
+
+    
+    
+    
     }
     
     func setChart(){
@@ -409,8 +525,29 @@ class DashboardVC:UIViewController, UICollectionViewDelegate,UICollectionViewDat
             
             let name = dashboard[indexPath.row]
             let utils = Utils()
+             var chatcount:Int=0
+            var frdcount:Int=0
             
-            cell.updateCell(itemName: name)
+            if(UserDefaults.standard.value(forKey: "ChatCount") != nil)
+            {
+           chatcount=(UserDefaults.standard.value(forKey: "ChatCount") as? Int)!
+            }
+            if(UserDefaults.standard.value(forKey: "FriendCount") != nil)
+            {
+           frdcount=(UserDefaults.standard.value(forKey: "FriendCount") as? Int)!
+            }
+         let c=chatcount as NSNumber
+           let f=frdcount as NSNumber
+            print(chatcount)
+        print(frdcount)
+            
+            print(c)
+            print(f)
+            
+
+            
+            cell.updateCell(itemName: name,chatcount:c.stringValue,frdcount:f.stringValue)
+            
             cell.layer.cornerRadius = 10
             cell.layer.shadowOpacity = 0.5
             cell.layer.shadowOffset = CGSize(width: 3.0, height: 2.0)
@@ -479,8 +616,18 @@ class DashboardVC:UIViewController, UICollectionViewDelegate,UICollectionViewDat
             
         else if(indexPath.row == 3){
             let textToShare = "Check out this app: Make Me Popular.. it's awesome"
+            let shareString = "https://itunes.apple.com/us/app/find-me-friends/id1207779520?ls=1&mt=8"
+            let objectsToShare = [textToShare, shareString] as [Any]
+            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
             
-            if let myWebsite = NSURL(string: "http://www.codingexplorer.com/") {
+            //New Excluded Activities Code
+            activityVC.excludedActivityTypes = [UIActivityType.airDrop, UIActivityType.addToReadingList]
+            //
+            
+            activityVC.popoverPresentationController?.sourceView = self.view
+            self.present(activityVC, animated: true, completion: nil)
+            
+            /*if let myWebsite = NSURL(string: shareString) {
                 let objectsToShare = [textToShare, myWebsite] as [Any]
                 let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
                 
@@ -490,7 +637,7 @@ class DashboardVC:UIViewController, UICollectionViewDelegate,UICollectionViewDat
                 
             activityVC.popoverPresentationController?.sourceView = self.view
                 self.present(activityVC, animated: true, completion: nil)
-            }
+            }*/
            
         }
         else if(indexPath.row == 4){
@@ -509,7 +656,16 @@ class DashboardVC:UIViewController, UICollectionViewDelegate,UICollectionViewDat
             
         }
         else if(indexPath.row == 7){
-            
+//            var m:Int=(UserDefaults.standard.value(forKey: "ChatCount") as? Int)!
+//            print(m)
+//            if(m == 0)
+//            {
+//                
+//            }
+//            else{
+//                UserDefaults.standard.set(0, forKey: "ChatCount") 
+//            }
+            chcount=0
             self.performSegue(withIdentifier: "chat", sender: self)
             
         }
@@ -528,7 +684,13 @@ class DashboardVC:UIViewController, UICollectionViewDelegate,UICollectionViewDat
         
         print(current_url)
         
-        Alamofire.request(current_url, method: .put, parameters: nil, encoding: JSONEncoding.default, headers: nil).responseJSON{ response in
+        
+        let fcmtk:String=UserDefaults.standard.value(forKey: "FCMToken") as! String
+        let headers1:HTTPHeaders = ["fcmToken":fcmtk]
+
+        
+        
+        Alamofire.request(current_url, method: .put, parameters: nil, encoding: JSONEncoding.default, headers:headers1).responseJSON{ response in
             
             let respo = response.response?.statusCode
             
@@ -596,8 +758,24 @@ class DashboardVC:UIViewController, UICollectionViewDelegate,UICollectionViewDat
             self.loadingView.removeFromSuperview()
         }
     }
+  }
+
+extension Date {
     
-
-
+    func offsetFrom(date:Date) -> String {
+        
+    
+        let difference = Calendar.current.dateComponents([.day,.hour,.minute,.second], from: date, to: self)
+       
+        let day:Int = difference.day!
+        let hour:Int = difference.hour!
+        let minute:Int = difference.minute!
+        let seconds:Int = difference.second!
+        
+        let diff = "\(day):\(hour):\(minute):\(seconds)"
+        
+        return diff
+        
+    }
+    
 }
-

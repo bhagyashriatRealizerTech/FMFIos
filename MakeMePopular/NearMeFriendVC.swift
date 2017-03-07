@@ -27,6 +27,7 @@ class NearMeFriendVC: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     @IBOutlet weak var radio2: UIImageView!
     var didFindMyLocation = false
     var isFavOpen:Bool = false
+    var nearMeFriendlist = NearByFriendMainResModel()
     
     @IBOutlet weak var pickerView: UIPickerView!
     var mapTasks = MapTask()
@@ -54,6 +55,7 @@ class NearMeFriendVC: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     var selectedRoute: Dictionary<String, AnyObject>!
     var overviewPolyline: Dictionary<String, AnyObject>!
     var routePolyline: GMSPolyline!
+    
 
     @IBOutlet weak var prevButton: UIImageView!
        
@@ -314,7 +316,7 @@ class NearMeFriendVC: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             nextButton.isHidden = true
         }
         
-        pageNo.text = String(counter + 1)
+        pageNo.text = "Page "+String(counter + 1)+" of "+String(totalCount)
     }
     
     func didTapView(){
@@ -358,6 +360,12 @@ class NearMeFriendVC: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             
         }
 
+    }
+    
+    func didAddFriendTap(sender:UITapGestureRecognizer){
+        let friend = nearMeFriendlist.results?[(sender.view?.tag)!]
+        sendFriendRequest(completed: {}, frnd: friend!, tag: (sender.view?.tag)!)
+    
     }
 
     
@@ -486,17 +494,14 @@ class NearMeFriendVC: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         
     }
     
-    func setuplocationMarker(coordinate: CLLocationCoordinate2D, info: String, userName:String,thumbnailUrl:String) {
+    func setuplocationMarker(coordinate: CLLocationCoordinate2D, info: String, userName:String,thumbnailUrl:String, tag:Int) {
         let utils = Utils()
         
-        
-
-        
         locationMarker = GMSMarker(position: coordinate)
-        let view1:UIView = UIView(frame: CGRect(x: 0, y: 0, width: 215, height: 100))
+        let view1:UIView = UIView(frame: CGRect(x: 0, y: 0, width: 225, height: 105))
         let uiImageView:UIImageView  = UIImageView(frame: CGRect(x: 2, y: 3, width: 60, height: 60))
-        let info1:UITextView = UITextView(frame: CGRect(x: 65, y: 0, width: 150, height: 60))
-        let add:UIButton = UIButton(frame: CGRect(x: 65, y: 65, width: 80, height: 25))
+        let info1:UITextView = UITextView(frame: CGRect(x: 65, y: 0, width: 225, height: 65))
+        let add:UIButton = UIButton(frame: CGRect(x: 65, y: 70, width: 80, height: 25))
        
         info1.contentOffset = CGPoint(x: 0, y: 0)
                 
@@ -541,13 +546,18 @@ class NearMeFriendVC: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         add.layer.shadowColor = UIColor.black.cgColor
         add.setTitleColor(UIColor.white, for: .normal)
         add.setTitle("Add", for: .normal)
+        add.tag = tag
         
-    
+        let singleTap = UITapGestureRecognizer(target: self, action: #selector(NearMeFriendVC.didAddFriendTap(sender:)))
+        singleTap.numberOfTapsRequired = 1 // you can change this value
+        add.isUserInteractionEnabled = true
+        add.addGestureRecognizer(singleTap)
+        
         
         view1.addSubview(uiImageView)
         view1.addSubview(info1)
         view1.addSubview(add)
-        UIGraphicsBeginImageContextWithOptions(CGSize(width: 215, height: 100), false, 0)
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: 225, height: 105), false, 0)
         
         view1.drawHierarchy(in: CGRect(x: 0, y: 0, width: view1.bounds.size.width, height: view1.bounds.size.height), afterScreenUpdates: true)
         let markerimg:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
@@ -573,7 +583,7 @@ class NearMeFriendVC: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         
         info1.backgroundColor = UIColor.clear
         info1.textColor = utils.hexStringToUIColor(hex: "ffffff")
-        info1.font = UIFont(name: "Avenir", size: 12)
+        info1.font = UIFont(name: "Avenir", size: 15)
         info1.text = info
         
         uiImageView.layer.cornerRadius = 31
@@ -656,6 +666,7 @@ class NearMeFriendVC: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             {
                 
                let mapRes = Mapper<NearByFriendMainResModel>().map(JSONObject: apiResult.value)
+                self.nearMeFriendlist = mapRes!
                 print("\(apiResult.value)")
                 
                 self.view.isUserInteractionEnabled = true
@@ -689,6 +700,14 @@ class NearMeFriendVC: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                         information = name + "\n" + gender + " , " + age + "\n" + lastupdate
                         
                         self.setuplocationMarkerFriend(coordinate: friendLoc.coordinate, info: information, userName: name, thumbnailUrl: thumburl)
+                        
+                        /*if(interest == ""){
+                            self.setuplocationMarkerFriend(coordinate: friendLoc.coordinate, info: information, userName: name, thumbnailUrl: thumburl)
+                        }
+                        else{
+                            
+                            self.setuplocationMarker(coordinate: friendLoc.coordinate, info: information, userName: name, thumbnailUrl: thumburl, tag: i)
+                        }*/
                         
                     }
                 }
@@ -782,7 +801,8 @@ class NearMeFriendVC: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                     
                     let information:String = name + "\n" + gender + " , " + age + "\n" + lastupdate
                     
-                    if(UserDefaults.standard.value(forKey: "Route") == nil){
+                    
+                    /* if(UserDefaults.standard.value(forKey: "Route") == nil){
                     self.setuplocationMarkerFriend(coordinate: friendLoc.coordinate,info: information,userName: name,thumbnailUrl: thumburl)
                     }
                     else if(UserDefaults.standard.value(forKey: "Route") as! Bool == false){
@@ -794,7 +814,7 @@ class NearMeFriendVC: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                         UserDefaults.standard.synchronize()
                         
                         self.showRoute(completed: {}, frndLatLan: friendLoc.coordinate, information: information, name: name, pic: thumburl)
-                    }
+                    }*/
                     
                     let utils = Utils()
                     let lastTime = lastupdate.components(separatedBy: " ")[1].components(separatedBy: ":")
@@ -809,7 +829,7 @@ class NearMeFriendVC: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                     else{
                     if(self.isTrackagain == true){
                         self.isTrackagain = false
-                        let credentialerror = UIAlertController(title: "Track Friend", message: "Click Ok to get current location", preferredStyle: .alert)
+                        let credentialerror = UIAlertController(title: "Track Friend", message: "Your friend was located at "+lastupdate+".Do you want to show that location???", preferredStyle: .alert)
                         
                         let okAction = UIAlertAction(title: "Ok", style: .default){ UIAlertAction in
                             if(Reachability.isConnectedToNetwork()){
@@ -823,7 +843,8 @@ class NearMeFriendVC: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                         }
                         
                         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel){ UIAlertAction in
-                            credentialerror.dismiss(animated: true, completion: {})
+                             self.showRoute(completed: {}, frndLatLan: friendLoc.coordinate, information: information, name: name, pic: thumburl)
+                            credentialerror.dismiss(animated: true, completion: nil)
                         }
                         
                         credentialerror.addAction(okAction)
@@ -987,6 +1008,85 @@ class NearMeFriendVC: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                 
                 credentialerror.addAction(cancelAction)
                 self.present(credentialerror, animated: true, completion: {  })
+            }
+            
+        }
+        
+        completed()
+    }
+    func sendFriendRequest(completed: DownloadComplete, frnd:NearByFriendResponseModel,tag:Int){
+        self.view.isUserInteractionEnabled = false
+        self.showActivityIndicator()
+        let methodName = "SendFriendRequest"
+        Current_Url = "\(BASE_URL)\(methodName)"
+        print(Current_Url)
+        
+        let current_url = URL(string: Current_Url)!
+        
+        let userId = UserDefaults.standard.value(forKey: "UserID") as! String
+        
+        let parameters1 = ["userId":userId,"friendId":frnd.friendUserId!,"isEmergencyContact":false] as [String : Any]
+        
+        let headers1:HTTPHeaders = ["Content-Type": "application/json",
+                                    "Accept": "application/json"]
+        
+        print(current_url)
+        
+        Alamofire.request(current_url, method: .post, parameters: parameters1, encoding: JSONEncoding.default, headers: headers1).responseString{ response in
+            
+            let respo = response.response?.statusCode
+            
+            if(respo == 200)
+            {
+                self.nearMeFriendlist.results?.remove(at: tag)
+                let mapRes = self.nearMeFriendlist
+                
+                
+                self.view.isUserInteractionEnabled = true
+                self.hideActivityIndicator()
+                
+                self.mapview.clear()
+
+                
+                for i in 0...((mapRes.results?.count)! - 1 ){
+                let lat:Double = mapRes.results![i].latitude!
+                let longi:Double = mapRes.results![i].longitude!
+                
+                let friendLoc = CLLocation(latitude: lat,longitude: longi)
+                let name:String = (mapRes.results?[i].friendName!)!
+                let gender:String = (mapRes.results?[i].gender!)!
+                let ageIn:Int = (mapRes.results?[i].age!)! as Int
+                let age:String = String(describing: ageIn)
+                let thumburl:String = (mapRes.results?[i].thumbnailUrl!)!
+                
+                var information:String = name + "\n" + gender + ", " + age
+                let lastupdate:String = self.getLocalDate(utcDate: (mapRes.results?[i].lastUpdatedOn)!)
+                
+                information = name + "\n" + gender + " , " + age + "\n" + lastupdate
+                
+                
+                    self.setuplocationMarker(coordinate: friendLoc.coordinate, info: information, userName: name, thumbnailUrl: thumburl, tag: i)
+                
+                }
+                
+                let msgSend = UIAlertController(title: "Friend Request", message: "Friend Request sent Successfully", preferredStyle: .alert )
+                
+                let cancleAction = UIAlertAction(title: "Ok", style: .cancel, handler:nil)
+                msgSend.addAction(cancleAction)
+                self.present(msgSend, animated: true, completion: {  })
+                
+                
+                
+            }
+            else{
+                self.view.isUserInteractionEnabled = true
+                self.hideActivityIndicator()
+                let msgSend = UIAlertController(title: "Friend Request", message: "Friend Request failed", preferredStyle: .alert )
+                
+                let cancleAction = UIAlertAction(title: "Ok", style: .cancel, handler:nil)
+                msgSend.addAction(cancleAction)
+                self.present(msgSend, animated: true, completion: {  })
+                
             }
             
         }

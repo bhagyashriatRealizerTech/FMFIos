@@ -24,19 +24,18 @@ class FriendListDetail: NSObject {
         
         
         var time=""
-        var c1:Int!
+       
         if #available(iOS 10.0, *) {
             
             do{
                 let searchResults=try self.getContext().fetch(request)
-                print ("num of results = \(searchResults.count)")
-                c1=searchResults.count-1
-                print(c1)
-                if(searchResults.count != 0)
+              
+             
+                              if(searchResults.count != 0)
                 {
                     if((searchResults[0] as AnyObject).value(forKey: "createTS") != nil){
                         time=(searchResults[0] as AnyObject).value(forKey: "createTS") as! String
-                        print("\(time)" )
+                       
                     }
                     
                 }
@@ -48,7 +47,7 @@ class FriendListDetail: NSObject {
                 
             catch
             {
-                print("no result")
+              
             }
         }
         return time
@@ -74,11 +73,10 @@ class FriendListDetail: NSObject {
                     if(trans.value(forKey: "friendsUserId") != nil){
                         friendsId = trans.value(forKey: "friendsUserId") as! String
                         isPresent = true
-                        print(friendsId)
+                       print( friendsId)
                     }
                     
                 }
-                print ("num of results = \(searchResults.count)")
                 
             } else {
                 // Fallback on earlier versions
@@ -88,8 +86,7 @@ class FriendListDetail: NSObject {
             
             //You need to convert to NSManagedObject to use 'for' loops
         } catch {
-            print("Error with request: \(error)")
-        }
+                    }
         
         return isPresent
     }
@@ -106,20 +103,20 @@ class FriendListDetail: NSObject {
         
         
         let newname=NSEntityDescription.entity(forEntityName: "FriendList", in: self.context)
-        print(newname!)
+       
         let newuser=FriendList(entity: newname!,insertInto: self.context)
         
         
         
         newuser.setValue(friendlist.userId, forKey:"userId")
         newuser.setValue(friendlist.friendName, forKey: "friendName")
-        print(friendlist.friendName!)
+      
         newuser.setValue(friendlist.friendThumbnailUrl, forKey: "friendThumbnailUrl")
         newuser.setValue(friendlist.friendsId, forKey: "friendsId")
         newuser.setValue(friendlist.isMessagingAllowed, forKey: "isMessagingAllowed")
-        print(friendlist.isMessagingAllowed!)
+
         newuser.setValue(friendlist.status, forKey: "status")
-        print(friendlist.status!)
+  
         newuser.setValue(friendlist.friendsUserId, forKey: "friendsUserId")
         newuser.setValue(friendlist.allowTrackingTillDate, forKey:"allowTrackingTillDate")
         newuser.setValue(friendlist.createTS, forKey: "createTS")
@@ -136,9 +133,7 @@ class FriendListDetail: NSObject {
             let nserror = error as NSError
             fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
         }
-        print(newuser)
-        
-        print("save")
+      
     }
     func deleteallvalues(){
         // Create Fetch Request
@@ -170,11 +165,10 @@ class FriendListDetail: NSObject {
             do{
                 let searchResults = try self.getContext().fetch(request)
                 
-                print ("num of results = \(searchResults.count)")
                 
                 //You need to convert to NSManagedObject to use 'for' loops
                 for trans in searchResults as! [NSManagedObject] {
-                    print(trans)
+                 
                     //get the Key Value pairs (although there may be a better way to do that...
                     var userId:String = ""
                     var friendName:String=""
@@ -185,33 +179,33 @@ class FriendListDetail: NSObject {
                     var  isMessagingAllowed:Bool!
                     if(trans.value(forKey: "userId") != nil){
                         userId=trans.value(forKey: "userId") as! String
-                        print(userId)
+                    
                     }
                     if(trans.value(forKey: "friendName") != nil){
                         friendName=trans.value(forKey: "friendName") as! String
-                        print(friendName)
+                        
                     }
                     if(trans.value(forKey: "friendsId") != nil){
                         friendsId=trans.value(forKey: "friendsId") as! String
-                        print(friendsId)
+                   
                     }
 
                     if(trans.value(forKey: "friendThumbnailUrl") != nil){
                         friendThumbnailUrl=trans.value(forKey: "friendThumbnailUrl") as! String
-                        print(friendThumbnailUrl)
+                     
                     }
                     if(trans.value(forKey: "friendsUserId") != nil){
                         frienduserid=trans.value(forKey: "friendsUserId") as! String
-                        print(frienduserid)
+                     
                     }
                     
                     if(trans.value(forKey: "status") != nil){
                         status=trans.value(forKey: "status") as! String
-                        print(status)
+                     
                     }
                     if(trans.value(forKey: "isMessagingAllowed") != nil){
                         isMessagingAllowed=trans.value(forKey: "isMessagingAllowed") as! Bool
-                        print(isMessagingAllowed)
+                      
                     }
                     
                   
@@ -224,7 +218,7 @@ class FriendListDetail: NSObject {
                         contacts.append(friendName)
                         
                         clist.append(friend)
-                        print(clist.count)
+                   
                     }
                     if(status=="Blocked"){
                         
@@ -242,7 +236,7 @@ class FriendListDetail: NSObject {
             // Fallback on earlier versions
         }
         
-        print(clist.count)
+     
         return clist
         
         

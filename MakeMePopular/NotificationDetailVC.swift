@@ -396,7 +396,8 @@ class NotificationDetailVC: UIViewController {
     }
     
     func hideActivityIndicator() {
-        
+        self.spinner.stopAnimating()
+        self.loadingView.removeFromSuperview()
         DispatchQueue.main.async {
             self.spinner.stopAnimating()
             self.loadingView.removeFromSuperview()

@@ -24,5 +24,9 @@ class NearByFriendMainResModel:Mappable{
         results <- map["results"]
        
     }
+    
+    init() {
+        
+    }
 }
 
